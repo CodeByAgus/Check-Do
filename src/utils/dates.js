@@ -11,8 +11,34 @@ function startOfDay(date) {
   return d;
 }
 
-export function addDays(days) {
-  return startOfDay(new Date(Date.now() + days * DAY_MS)).getTime();
+const pad = (n) => String(n).padStart(2, '0');
+
+// Date typed by the user is always dd/mm/yyyy.
+export function formatDMY(timestamp) {
+  const d = new Date(timestamp);
+  return `${pad(d.getDate())}/${pad(d.getMonth() + 1)}/${d.getFullYear()}`;
+}
+
+// Tomorrow, used as the default value of the date field.
+export function tomorrowDMY() {
+  return formatDMY(startOfDay(Date.now()).getTime() + DAY_MS);
+}
+
+// Keeps only digits and inserts the slashes while typing: "25122026" -> "25/12/2026".
+export function maskDMY(text) {
+  const digits = text.replace(/\D/g, '').slice(0, 8);
+  return [digits.slice(0, 2), digits.slice(2, 4), digits.slice(4)].filter(Boolean).join('/');
+}
+
+// "dd/mm/yyyy" -> timestamp at local midnight, or null if it is not a real date.
+export function parseDMY(text) {
+  const match = /^(\d{2})\/(\d{2})\/(\d{4})$/.exec(text);
+  if (!match) return null;
+  const [day, month, year] = match.slice(1).map(Number);
+  const date = new Date(year, month - 1, day);
+  // Rejects overflow such as 31/02 (JS would silently roll it into March).
+  const valid = date.getFullYear() === year && date.getMonth() === month - 1 && date.getDate() === day;
+  return valid ? date.getTime() : null;
 }
 
 // Whole days between today and the due date (negative = overdue).

@@ -2,18 +2,30 @@ import { useState } from 'react';
 import { Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
 import GlassCard from './GlassCard';
 import { colors } from '../theme/colors';
+import { daysLeft, maskDMY, parseDMY, tomorrowDMY } from '../utils/dates';
 
-// Compact bar: task name + "due in N days" stepper + add button.
+// Compact bar: task name + due date (dd/mm/yyyy) + add button.
 export default function AddTaskBar({ onAdd }) {
   const [title, setTitle] = useState('');
-  const [days, setDays] = useState(1);
+  const [dateText, setDateText] = useState(tomorrowDMY());
+
+  const due = parseDMY(dateText);
+  const invalid = dateText.length === 10 && due === null;
 
   const submit = () => {
-    if (!title.trim()) return;
-    onAdd(title.trim(), days);
+    if (!title.trim() || due === null) return;
+    onAdd(title.trim(), due);
     setTitle('');
-    setDays(1);
+    setDateText(tomorrowDMY());
   };
+
+  // Live feedback: how many days the typed date is from today.
+  let hint = 'Formato dd/mm/aaaa';
+  if (invalid) hint = 'Fecha no válida';
+  else if (due !== null) {
+    const d = daysLeft(due);
+    hint = d < 0 ? `Vencida hace ${-d} d` : d === 0 ? 'Vence hoy' : `Faltan ${d} d`;
+  }
 
   return (
     <GlassCard radius={26}>
@@ -31,23 +43,20 @@ export default function AddTaskBar({ onAdd }) {
         </Pressable>
       </View>
 
-      <View style={styles.stepper}>
-        <Text style={styles.label}>Vence en {days} {days === 1 ? 'día' : 'días'}</Text>
-        <View style={styles.row}>
-          <Step label="−" onPress={() => setDays((d) => Math.max(0, d - 1))} />
-          <Step label="+" onPress={() => setDays((d) => d + 1)} />
-          <Step label="+7" onPress={() => setDays((d) => d + 7)} />
-        </View>
+      <View style={styles.dateRow}>
+        <TextInput
+          value={dateText}
+          onChangeText={(t) => setDateText(maskDMY(t))}
+          onSubmitEditing={submit}
+          placeholder="dd/mm/aaaa"
+          placeholderTextColor={colors.textSoft}
+          keyboardType="number-pad"
+          maxLength={10}
+          style={[styles.date, invalid && styles.dateInvalid]}
+        />
+        <Text style={[styles.hint, invalid && styles.hintInvalid]}>{hint}</Text>
       </View>
     </GlassCard>
-  );
-}
-
-function Step({ label, onPress }) {
-  return (
-    <Pressable onPress={onPress} style={styles.step}>
-      <Text style={styles.stepText}>{label}</Text>
-    </Pressable>
   );
 }
 
@@ -59,11 +68,12 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(255,255,255,0.3)', alignItems: 'center', justifyContent: 'center',
   },
   addText: { color: colors.text, fontSize: 22, marginTop: -2 },
-  stepper: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginTop: 8 },
-  label: { color: colors.textSoft, fontSize: 14 },
-  step: {
-    minWidth: 34, height: 28, borderRadius: 14, marginLeft: 6, paddingHorizontal: 8,
-    backgroundColor: 'rgba(255,255,255,0.2)', alignItems: 'center', justifyContent: 'center',
+  dateRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginTop: 8 },
+  date: {
+    color: colors.text, fontSize: 15, width: 120, paddingVertical: 4, paddingHorizontal: 10,
+    borderRadius: 12, backgroundColor: 'rgba(255,255,255,0.2)', outlineStyle: 'none',
   },
-  stepText: { color: colors.text, fontWeight: '600' },
+  dateInvalid: { borderWidth: 1, borderColor: '#ff453a' },
+  hint: { color: colors.textSoft, fontSize: 14 },
+  hintInvalid: { color: '#ff453a' },
 });

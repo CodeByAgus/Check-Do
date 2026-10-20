@@ -4,7 +4,7 @@ App de tareas con estilo **liquid glass** (vidrio translúcido, como en iPhone).
 
 ## Qué hace
 
-- **Barra superior** para agregar una tarea: nombre + "vence en N días".
+- **Barra superior** para agregar una tarea: nombre + fecha de vencimiento en formato `dd/mm/aaaa` (las barras se escriben solas). La app calcula cuántos días faltan.
 - **Lista de barras horizontales**: nombre de la tarea y, a la derecha, un recuadro de color con el tiempo restante.
 - **Tocar el recuadro** cambia la unidad: días → semanas → meses → días.
 - **Orden**: por defecto la fecha más próxima primero. Con las flechas ▲▼ se mueve a mano; el texto "volver a fecha" restaura el orden automático.

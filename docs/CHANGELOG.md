@@ -31,6 +31,14 @@
 - El chip de meses (`mes`) no se vio en pantalla; la lógica está en `src/utils/dates.js`.
 - Para abrirla en Expo Go el teléfono y el PC deben compartir red; instalar la app como APK (sin PC ni wifi) queda como paso futuro.
 
+## 2026-10-20 — Fecha en formato dd/mm/aaaa
+
+- `src/utils/dates.js`: `maskDMY` (inserta las barras al escribir), `parseDMY` (valida que sea una fecha real, rechaza 31/02), `formatDMY`, `tomorrowDMY`. Se eliminó `addDays`.
+- `AddTaskBar.js`: el selector de días cambió por un campo de fecha, con "mañana" como valor inicial y un aviso en vivo ("Faltan 66 d", "Vence hoy", "Vencida hace N d", "Fecha no válida"). Si la fecha no es válida la tarea no se agrega.
+- `useTasks.js`: `addTask(title, due)` ahora recibe la fecha ya convertida; los días restantes se calculan siempre desde esa fecha.
+- Probado en web: `31/02/2026` se rechaza; `25/12/2026` muestra 66 días y la tarea queda con `66 d`.
+- Las tareas guardadas antes de este cambio siguen funcionando: ya guardaban la fecha de vencimiento.
+
 ## 2026-10-20 — Web instalable para iPhone (PWA)
 
 - `public/manifest.json`, íconos (`icon-192/512.png`, `apple-touch-icon.png`) y `public/index.html` con ajustes de iPhone.

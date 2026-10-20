@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { addDays, nextUnit } from '../utils/dates';
+import { nextUnit } from '../utils/dates';
 
 // Task shape: { id, title, due (timestamp), unit: 'days' | 'weeks' | 'months' }
 // Everything is saved on the device, so the app works with no internet.
@@ -35,8 +35,8 @@ export function useTasks() {
     [tasks, sortMode]
   );
 
-  const addTask = (title, daysAhead) => {
-    const task = { id: String(Date.now()), title, due: addDays(daysAhead), unit: 'days' };
+  const addTask = (title, due) => {
+    const task = { id: String(Date.now()), title, due, unit: 'days' };
     setTasks((prev) => [...prev, task]);
   };
 
