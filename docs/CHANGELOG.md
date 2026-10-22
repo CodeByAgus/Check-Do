@@ -31,6 +31,14 @@
 - El chip de meses (`mes`) no se vio en pantalla; la lógica está en `src/utils/dates.js`.
 - Para abrirla en Expo Go el teléfono y el PC deben compartir red; instalar la app como APK (sin PC ni wifi) queda como paso futuro.
 
+## 2026-10-22 — Ajuste visual según captura del usuario
+
+- **Tarjeta** (`TaskCard`): espiral tipo cuaderno en el borde izquierdo, icono + etiqueta de categoría ("Personal") arriba, botón ✕ redondo, título grande y debajo la descripción con el chip de plazo como píldora a la derecha. Se quitó la línea de tiempo.
+- **Encabezado** (`HomeScreen`): esquina superior derecha muy curva con un círculo de perfil (decorativo, sin función), botón + junto al título.
+- **Fondo** de la lista en celeste (`colors.canvas`) y textos sobre él en tono oscuro: el "Orden: por fecha" antes casi no se leía.
+- Se mantienen las flechas ▲▼ (pequeñas, junto a ✕) porque son la forma de ordenar a mano, aunque la captura no las traía.
+- Probado en web con vista de móvil: tarjetas con chip rojo (`-11 d`, vencida) y verde (`20 d`).
+
 ## 2026-10-22 — Rediseño: formato "Mis tareas" azul y blanco
 
 Se reemplazó el estilo de vidrio por un diseño basado en una imagen de referencia (pantalla principal + pantalla de crear tarea).

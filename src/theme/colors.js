@@ -1,7 +1,9 @@
 // All colors live here so the look can be changed in one place.
 export const colors = {
   outer: '#9ecbf0', // page background behind the app on wide screens
-  primary: '#3d8fe0', // main blue
+  primary: '#3d8fe0', // main blue (buttons, selected items)
+  canvas: '#a9cdf0', // light blue behind the cards
+  avatar: '#b5443a', // placeholder profile circle
   surface: '#ffffff',
   ink: '#1f2a44', // main text
   inkSoft: '#7a869a', // secondary text
