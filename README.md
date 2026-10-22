@@ -10,7 +10,7 @@ App de tareas con fechas de vencimiento. Un solo código funciona en **Expo Go (
 - **Tarjetas de tarea** sobre el fondo azul: icono de categoría, nombre, descripción y, en la esquina inferior derecha, un recuadro de color con el plazo.
 - **Tocar el recuadro** cambia lo que muestra: días → semanas → meses → fecha (`dd/mm/aaaa`) → días.
 - **Color del recuadro** según urgencia: rojo (vencida), naranja (0–2 días), amarillo (hasta 7), verde (hasta 30), azul (más de 30).
-- **Orden**: por defecto la fecha más próxima primero. Con ▲▼ se mueve a mano; "volver a fecha" restaura el orden automático.
+- **Orden**: por defecto la fecha más próxima primero. Para ordenar a mano, **arrastra una tarea desde su borde izquierdo (la espiral)**; "volver a fecha" restaura el orden automático. No se puede arrastrar mientras hay un día filtrado.
 
 **Pantalla "Nueva tarea"**
 - Nombre, categoría (Trabajo, Personal, Estudio, Hogar), fecha elegida en un **pequeño calendario** y descripción opcional.
@@ -40,7 +40,7 @@ App.js                 Raíz: elige qué pantalla mostrar y guarda las tareas
 index.js               Punto de entrada
 src/
   screens/             Pantallas completas (HomeScreen, CreateTaskScreen)
-  components/          Piezas visuales (DayStrip, TaskCard, CategoryChips, CalendarPicker)
+  components/          Piezas visuales (DayStrip, TaskCard, SortableList, CategoryChips, CalendarPicker)
   hooks/               Lógica de datos (useTasks)
   utils/               Funciones puras (fechas)
   theme/               Colores y categorías en un solo lugar
@@ -58,6 +58,7 @@ assets/                Imágenes
 | Formulario de nueva tarea             | `src/screens/CreateTaskScreen.js`  |
 | Cómo se ve cada tarea y su recuadro   | `src/components/TaskCard.js`       |
 | Franja de días                        | `src/components/DayStrip.js`       |
+| Arrastrar para ordenar                | `src/components/SortableList.js`   |
 | El calendario                         | `src/components/CalendarPicker.js` |
 | Reglas de orden, guardado y tareas    | `src/hooks/useTasks.js`            |
 | Cálculos y formato de fechas          | `src/utils/dates.js`               |

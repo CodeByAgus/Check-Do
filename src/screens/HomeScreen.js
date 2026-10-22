@@ -2,6 +2,7 @@ import { useMemo, useState } from 'react';
 import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import DayStrip from '../components/DayStrip';
+import SortableList from '../components/SortableList';
 import TaskCard from '../components/TaskCard';
 import { colors } from '../theme/colors';
 import { formatDMY, formatLongDate, nextDays, sameDay } from '../utils/dates';
@@ -9,8 +10,9 @@ import { formatDMY, formatLongDate, nextDays, sameDay } from '../utils/dates';
 // Header (title, date, day strip) on white, task list on the blue area below.
 export default function HomeScreen({ api, onAdd }) {
   const insets = useSafeAreaInsets();
-  const { tasks, sortMode, removeTask, cycleUnit, move, sortByDate } = api;
+  const { tasks, sortMode, removeTask, cycleUnit, reorder, sortByDate } = api;
   const [day, setDay] = useState(null); // null = show every task
+  const [dragging, setDragging] = useState(false); // pauses scrolling while a card is dragged
   const days = useMemo(() => nextDays(14), []);
 
   const shown = day === null ? tasks : tasks.filter((t) => sameDay(t.due, day));
@@ -33,7 +35,7 @@ export default function HomeScreen({ api, onAdd }) {
       {/* Placeholder profile circle, sits in the curved corner of the header */}
       <View style={[styles.avatar, { top: insets.top + 14 }]} />
 
-      <ScrollView contentContainerStyle={styles.list}>
+      <ScrollView contentContainerStyle={styles.list} scrollEnabled={!dragging}>
         <View style={styles.listHeader}>
           {day !== null ? (
             <Pressable onPress={() => setDay(null)}>
@@ -44,20 +46,22 @@ export default function HomeScreen({ api, onAdd }) {
               <Text style={styles.listHeaderText}>
                 {sortMode === 'date' ? 'Orden: por fecha' : 'Orden manual · volver a fecha'}
               </Text>
+              <Text style={styles.hint}>Arrastra una tarea desde su borde izquierdo para ordenarla</Text>
             </Pressable>
           )}
         </View>
 
-        {shown.map((task) => (
-          <TaskCard
-            key={task.id}
-            task={task}
-            canMove={day === null}
-            onCycleUnit={cycleUnit}
-            onMove={move}
-            onRemove={removeTask}
-          />
-        ))}
+        {/* Dragging only makes sense on the full list, not on a single day's filter */}
+        <SortableList
+          data={shown}
+          keyExtractor={(task) => task.id}
+          enabled={day === null}
+          onReorder={reorder}
+          onDragChange={setDragging}
+          renderItem={(task, { handleProps }) => (
+            <TaskCard task={task} handleProps={handleProps} onCycleUnit={cycleUnit} onRemove={removeTask} />
+          )}
+        />
 
         {shown.length === 0 && (
           <Text style={styles.empty}>
@@ -90,5 +94,6 @@ const styles = StyleSheet.create({
   list: { padding: 20, paddingTop: 12 },
   listHeader: { marginBottom: 12 },
   listHeaderText: { color: colors.ink, fontSize: 13 },
+  hint: { color: colors.inkSoft, fontSize: 11, marginTop: 2 },
   empty: { color: colors.ink, textAlign: 'center', marginTop: 30 },
 });

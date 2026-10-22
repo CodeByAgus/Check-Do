@@ -1,4 +1,4 @@
-import { Pressable, StyleSheet, Text, View } from 'react-native';
+import { Platform, Pressable, StyleSheet, Text, View } from 'react-native';
 import { colors, getCategory } from '../theme/colors';
 import { daysLeft, formatChip, urgencyColor } from '../utils/dates';
 
@@ -7,14 +7,15 @@ const SPIRAL_RINGS = 4;
 // White "notebook" card: category icon + label and delete on top, big title,
 // then the description and the colored time chip. Tapping the chip cycles
 // days -> weeks -> months -> due date.
-export default function TaskCard({ task, canMove, onCycleUnit, onMove, onRemove }) {
+// `handleProps` (from SortableList) makes the left edge the drag grip.
+export default function TaskCard({ task, handleProps, onCycleUnit, onRemove }) {
   const days = daysLeft(task.due);
   const category = getCategory(task.category);
 
   return (
     <View style={styles.card}>
-      {/* Spiral binding on the left edge */}
-      <View style={styles.spiral}>
+      {/* Spiral binding on the left edge: also the grip to drag the card */}
+      <View style={[styles.spiral, handleProps && styles.grip]} {...handleProps}>
         {Array.from({ length: SPIRAL_RINGS }, (_, i) => (
           <View key={i} style={styles.ring} />
         ))}
@@ -28,12 +29,6 @@ export default function TaskCard({ task, canMove, onCycleUnit, onMove, onRemove 
           <Text style={styles.pillText}>{category.label}</Text>
         </View>
         <View style={styles.spacer} />
-        {canMove && (
-          <View style={styles.arrows}>
-            <Pressable onPress={() => onMove(task.id, -1)}><Text style={styles.arrow}>▲</Text></Pressable>
-            <Pressable onPress={() => onMove(task.id, 1)}><Text style={styles.arrow}>▼</Text></Pressable>
-          </View>
-        )}
         <Pressable onPress={() => onRemove(task.id)} style={styles.remove}>
           <Text style={styles.removeText}>✕</Text>
         </Pressable>
@@ -58,7 +53,10 @@ const styles = StyleSheet.create({
     backgroundColor: colors.surface, borderRadius: 24, paddingVertical: 14, paddingLeft: 26, paddingRight: 16,
     marginBottom: 14, overflow: 'hidden',
   },
-  spiral: { position: 'absolute', left: 0, top: 12, bottom: 12, justifyContent: 'space-around' },
+  // Wide, full-height strip so it is easy to grab with a finger.
+  spiral: { position: 'absolute', left: 0, top: 0, bottom: 0, width: 30, paddingVertical: 12, justifyContent: 'space-around' },
+  // touchAction none: stops the browser from scrolling the page while dragging.
+  grip: Platform.select({ web: { cursor: 'grab', touchAction: 'none' }, default: {} }),
   ring: { width: 14, height: 7, borderTopRightRadius: 4, borderBottomRightRadius: 4, backgroundColor: colors.canvas },
   topRow: { flexDirection: 'row', alignItems: 'center' },
   icon: {
@@ -70,8 +68,6 @@ const styles = StyleSheet.create({
   },
   pillText: { color: colors.ink, fontSize: 13 },
   spacer: { flex: 1 },
-  arrows: { flexDirection: 'row', marginRight: 8 },
-  arrow: { color: colors.inkSoft, fontSize: 11, paddingHorizontal: 5 },
   remove: { width: 32, height: 32, borderRadius: 16, backgroundColor: colors.tint, alignItems: 'center', justifyContent: 'center' },
   removeText: { color: colors.ink, fontSize: 13, fontWeight: '700' },
   title: { color: colors.ink, fontSize: 24, fontWeight: '800', marginTop: 10 },

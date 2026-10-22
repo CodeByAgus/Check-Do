@@ -45,18 +45,17 @@ export function useTasks() {
   const cycleUnit = (id) =>
     setTasks((prev) => prev.map((t) => (t.id === id ? { ...t, unit: nextUnit(t.unit) } : t)));
 
-  // Moving a task freezes the current order and switches to manual mode.
-  const move = (id, direction) => {
+  // Dragging a task freezes the current order and switches to manual mode.
+  const reorder = (from, to) => {
+    if (from === to) return;
     const list = [...visible];
-    const from = list.findIndex((t) => t.id === id);
-    const to = from + direction;
-    if (to < 0 || to >= list.length) return;
-    [list[from], list[to]] = [list[to], list[from]];
+    const [moved] = list.splice(from, 1);
+    list.splice(to, 0, moved);
     setTasks(list);
     setSortMode('manual');
   };
 
   const sortByDate = () => setSortMode('date');
 
-  return { tasks: visible, sortMode, addTask, removeTask, cycleUnit, move, sortByDate };
+  return { tasks: visible, sortMode, addTask, removeTask, cycleUnit, reorder, sortByDate };
 }

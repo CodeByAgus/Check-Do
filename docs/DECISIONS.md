@@ -7,7 +7,7 @@
 | Dos pantallas con un simple `useState` | No hace falta una librería de navegación para dos pantallas. Las tareas viven en `App.js` para no perderse al cambiar. |
 | Filtro por día en la franja | Con fechas de vencimiento (no horas), tocar un día muestra lo que vence ese día. |
 | Sin horas de inicio/fin ni menú/campana/avatar | La referencia los traía, pero la app no los usa; mejor no mostrar controles sin función. |
-| Reordenar con flechas ▲▼ | Arrastrar requiere librerías extra y falla distinto en web/móvil. Las flechas son simples y funcionan igual en ambos. |
+| Reordenar arrastrando desde el borde, con `PanResponder` | Pedido del usuario. `PanResponder` ya viene con React Native y funciona igual en móvil y web, sin librerías de gestos. Solo el borde izquierdo inicia el arrastre, así que tocar el chip, la ✕ o desplazar la lista no lo activa por error. (Antes se usaban flechas ▲▼.) |
 | Calendario propio (`CalendarPicker`) | Un selector de fecha nativo difiere entre móvil y web y las librerías añaden dependencias. Un calendario simple dibujado con la propia app se ve y se comporta igual en ambos, y evita errores de escritura. Los días restantes se calculan desde la fecha elegida, que se muestra como dd/mm/aaaa. |
 | El chip tiene 4 vistas | Días, semanas, meses y fecha: el usuario elige cómo ver el plazo con un toque. |
 | Unidad guardada por tarea | Cada tarea recuerda si se muestra en días, semanas o meses. |

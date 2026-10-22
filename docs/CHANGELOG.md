@@ -31,12 +31,22 @@
 - El chip de meses (`mes`) no se vio en pantalla; la lógica está en `src/utils/dates.js`.
 - Para abrirla en Expo Go el teléfono y el PC deben compartir red; instalar la app como APK (sin PC ni wifi) queda como paso futuro.
 
+## 2026-10-22 — Arrastrar tareas desde el borde
+
+- Nuevo `src/components/SortableList.js`: lista cuyos elementos se reordenan arrastrando. Usa `PanResponder` (incluido en React Native), sin librerías, igual en móvil y web. Las demás tarjetas se apartan mientras se arrastra y el cambio se guarda al soltar.
+- `TaskCard`: el **borde izquierdo (la espiral)** es ahora la zona de agarre, más ancha para tomarla con el dedo. Se quitaron las flechas ▲▼.
+- `useTasks`: `move` se reemplazó por `reorder(from, to)`. Al arrastrar, el orden pasa a manual; "volver a fecha" lo restaura.
+- `HomeScreen`: se pausa el scroll mientras se arrastra, y aparece una pista bajo "Orden". Con un día filtrado no se puede arrastrar (la lista es parcial).
+- `public/index.html`: se desactiva la selección de texto en la web (salvo en los campos de escritura) para que arrastrar no resalte texto.
+- Probado en web con vista de móvil, simulando ratón con varios movimientos: el orden se invierte, pasa a "Orden manual", se conserva al recargar y "volver a fecha" lo restaura. La exportación web compila.
+- No probado con un dedo real en un teléfono; no hay auto-desplazamiento al arrastrar cerca del borde de la pantalla.
+
 ## 2026-10-22 — Ajuste visual según captura del usuario
 
 - **Tarjeta** (`TaskCard`): espiral tipo cuaderno en el borde izquierdo, icono + etiqueta de categoría ("Personal") arriba, botón ✕ redondo, título grande y debajo la descripción con el chip de plazo como píldora a la derecha. Se quitó la línea de tiempo.
 - **Encabezado** (`HomeScreen`): esquina superior derecha muy curva con un círculo de perfil (decorativo, sin función), botón + junto al título.
 - **Fondo** de la lista en celeste (`colors.canvas`) y textos sobre él en tono oscuro: el "Orden: por fecha" antes casi no se leía.
-- Se mantienen las flechas ▲▼ (pequeñas, junto a ✕) porque son la forma de ordenar a mano, aunque la captura no las traía.
+- Se mantuvieron las flechas ▲▼ (pequeñas, junto a ✕) para ordenar a mano; luego se reemplazaron por arrastrar desde el borde (ver arriba).
 - Probado en web con vista de móvil: tarjetas con chip rojo (`-11 d`, vencida) y verde (`20 d`).
 
 ## 2026-10-22 — Rediseño: formato "Mis tareas" azul y blanco

@@ -15,6 +15,9 @@
     <style>
       html, body, #root { height: 100%; background: #9ecbf0; }
       #root { display: flex; }
+      /* Native-app feel: no text highlighting while dragging, except inside text fields */
+      body { -webkit-user-select: none; user-select: none; }
+      input, textarea { -webkit-user-select: text; user-select: text; }
     </style>
   </head>
   <body>
