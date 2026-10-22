@@ -31,6 +31,16 @@
 - El chip de meses (`mes`) no se vio en pantalla; la lógica está en `src/utils/dates.js`.
 - Para abrirla en Expo Go el teléfono y el PC deben compartir red; instalar la app como APK (sin PC ni wifi) queda como paso futuro.
 
+## 2026-10-22 — Calendario y fecha en el chip
+
+- Nuevo `src/components/CalendarPicker.js`: calendario mensual pequeño (lunes primero, mes anterior/siguiente, hoy con borde, día elegido resaltado). Sin librerías, igual en móvil y web.
+- `AddTaskBar.js`: se reemplazó el campo de texto por un botón con la fecha (`📅 dd/mm/aaaa`) que abre el calendario; al elegir un día se cierra. Se mantiene el aviso "Faltan N d".
+- El chip ahora recorre 4 vistas al tocarlo: días → semanas → meses → **fecha (dd/mm/aaaa)** → días.
+- `dates.js`: se eliminaron `maskDMY`, `parseDMY` y `tomorrowDMY` (ya no se escribe la fecha a mano); se agregaron `tomorrow`, `formatChip`, `monthCells` y `MONTH_NAMES`.
+- Corrección de diseño: el degradado no llenaba el alto de la pantalla y las burbujas decorativas causaban scroll horizontal (`App.js`, `GlassBackground.js`, `public/index.html`).
+- Probado en web: calendario de octubre 2026 correcto, 15/11/2026 da "Faltan 24 d" desde el 22/10, y el chip recorre `24 d → 3 sem → 1 mes → 15/11/2026 → 24 d`.
+- No probado en un teléfono real.
+
 ## 2026-10-20 — Fecha en formato dd/mm/aaaa
 
 - `src/utils/dates.js`: `maskDMY` (inserta las barras al escribir), `parseDMY` (valida que sea una fecha real, rechaza 31/02), `formatDMY`, `tomorrowDMY`. Se eliminó `addDays`.

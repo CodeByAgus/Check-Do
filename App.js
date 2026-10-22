@@ -13,7 +13,7 @@ export default function App() {
   }, []);
 
   return (
-    <SafeAreaProvider>
+    <SafeAreaProvider style={{ flex: 1 }}>
       <StatusBar style="light" />
       <HomeScreen />
     </SafeAreaProvider>

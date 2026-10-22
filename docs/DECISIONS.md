@@ -5,7 +5,8 @@
 | Expo + `react-native-web` | Un solo código para Expo Go y navegador. |
 | `expo-blur` + `expo-linear-gradient` | Efecto de vidrio sin código nativo propio; funciona en web. |
 | Reordenar con flechas ▲▼ | Arrastrar requiere librerías extra y falla distinto en web/móvil. Las flechas son simples y funcionan igual en ambos. |
-| Fecha escrita como dd/mm/aaaa | Un selector de fecha nativo difiere entre móvil y web; un campo de texto con máscara se comporta igual en ambos. Los días restantes se calculan desde esa fecha. |
+| Calendario propio (`CalendarPicker`) | Un selector de fecha nativo difiere entre móvil y web y las librerías añaden dependencias. Un calendario simple dibujado con la propia app se ve y se comporta igual en ambos, y evita errores de escritura. Los días restantes se calculan desde la fecha elegida, que se muestra como dd/mm/aaaa. |
+| El chip tiene 4 vistas | Días, semanas, meses y fecha: el usuario elige cómo ver el plazo con un toque. |
 | Unidad guardada por tarea | Cada tarea recuerda si se muestra en días, semanas o meses. |
 | Datos guardados con AsyncStorage | Las tareas quedan en el dispositivo y la app no necesita internet. |
 | Ancho máximo 560 px | En el navegador la app se ve como en un teléfono. |

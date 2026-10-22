@@ -1,10 +1,10 @@
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import GlassCard from './GlassCard';
 import { colors } from '../theme/colors';
-import { daysLeft, formatLeft, urgencyColor } from '../utils/dates';
+import { daysLeft, formatChip, urgencyColor } from '../utils/dates';
 
 // One horizontal bar: name on the left, colored time chip on the right.
-// Tapping the chip cycles days -> weeks -> months.
+// Tapping the chip cycles days -> weeks -> months -> due date.
 export default function TaskRow({ task, onCycleUnit, onMove, onRemove }) {
   const days = daysLeft(task.due);
 
@@ -19,7 +19,7 @@ export default function TaskRow({ task, onCycleUnit, onMove, onRemove }) {
         <Text style={styles.title} numberOfLines={1}>{task.title}</Text>
 
         <Pressable onPress={() => onCycleUnit(task.id)} style={[styles.chip, { backgroundColor: urgencyColor(days) }]}>
-          <Text style={styles.chipText}>{days < 0 ? '-' : ''}{formatLeft(days, task.unit)}</Text>
+          <Text style={styles.chipText}>{task.unit !== 'date' && days < 0 ? '-' : ''}{formatChip(task.due, task.unit)}</Text>
         </Pressable>
 
         <Pressable onPress={() => onRemove(task.id)} style={styles.remove}>

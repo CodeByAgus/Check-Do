@@ -1,31 +1,27 @@
 import { useState } from 'react';
 import { Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
 import GlassCard from './GlassCard';
+import CalendarPicker from './CalendarPicker';
 import { colors } from '../theme/colors';
-import { daysLeft, maskDMY, parseDMY, tomorrowDMY } from '../utils/dates';
+import { daysLeft, formatDMY, tomorrow } from '../utils/dates';
 
-// Compact bar: task name + due date (dd/mm/yyyy) + add button.
+// Compact bar: task name + due date picked from a small calendar + add button.
 export default function AddTaskBar({ onAdd }) {
   const [title, setTitle] = useState('');
-  const [dateText, setDateText] = useState(tomorrowDMY());
-
-  const due = parseDMY(dateText);
-  const invalid = dateText.length === 10 && due === null;
+  const [due, setDue] = useState(tomorrow());
+  const [calendarOpen, setCalendarOpen] = useState(false);
 
   const submit = () => {
-    if (!title.trim() || due === null) return;
+    if (!title.trim()) return;
     onAdd(title.trim(), due);
     setTitle('');
-    setDateText(tomorrowDMY());
+    setDue(tomorrow());
+    setCalendarOpen(false);
   };
 
-  // Live feedback: how many days the typed date is from today.
-  let hint = 'Formato dd/mm/aaaa';
-  if (invalid) hint = 'Fecha no válida';
-  else if (due !== null) {
-    const d = daysLeft(due);
-    hint = d < 0 ? `Vencida hace ${-d} d` : d === 0 ? 'Vence hoy' : `Faltan ${d} d`;
-  }
+  // Live feedback: how many days the chosen date is from today.
+  const d = daysLeft(due);
+  const hint = d < 0 ? `Vencida hace ${-d} d` : d === 0 ? 'Vence hoy' : `Faltan ${d} d`;
 
   return (
     <GlassCard radius={26}>
@@ -44,18 +40,21 @@ export default function AddTaskBar({ onAdd }) {
       </View>
 
       <View style={styles.dateRow}>
-        <TextInput
-          value={dateText}
-          onChangeText={(t) => setDateText(maskDMY(t))}
-          onSubmitEditing={submit}
-          placeholder="dd/mm/aaaa"
-          placeholderTextColor={colors.textSoft}
-          keyboardType="number-pad"
-          maxLength={10}
-          style={[styles.date, invalid && styles.dateInvalid]}
-        />
-        <Text style={[styles.hint, invalid && styles.hintInvalid]}>{hint}</Text>
+        <Pressable onPress={() => setCalendarOpen((open) => !open)} style={styles.date}>
+          <Text style={styles.dateText}>📅 {formatDMY(due)}</Text>
+        </Pressable>
+        <Text style={styles.hint}>{hint}</Text>
       </View>
+
+      {calendarOpen && (
+        <CalendarPicker
+          value={due}
+          onSelect={(timestamp) => {
+            setDue(timestamp);
+            setCalendarOpen(false);
+          }}
+        />
+      )}
     </GlassCard>
   );
 }
@@ -69,11 +68,7 @@ const styles = StyleSheet.create({
   },
   addText: { color: colors.text, fontSize: 22, marginTop: -2 },
   dateRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginTop: 8 },
-  date: {
-    color: colors.text, fontSize: 15, width: 120, paddingVertical: 4, paddingHorizontal: 10,
-    borderRadius: 12, backgroundColor: 'rgba(255,255,255,0.2)', outlineStyle: 'none',
-  },
-  dateInvalid: { borderWidth: 1, borderColor: '#ff453a' },
+  date: { paddingVertical: 5, paddingHorizontal: 12, borderRadius: 14, backgroundColor: 'rgba(255,255,255,0.2)' },
+  dateText: { color: colors.text, fontSize: 15 },
   hint: { color: colors.textSoft, fontSize: 14 },
-  hintInvalid: { color: '#ff453a' },
 });

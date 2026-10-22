@@ -4,9 +4,9 @@ App de tareas con estilo **liquid glass** (vidrio translúcido, como en iPhone).
 
 ## Qué hace
 
-- **Barra superior** para agregar una tarea: nombre + fecha de vencimiento en formato `dd/mm/aaaa` (las barras se escriben solas). La app calcula cuántos días faltan.
+- **Barra superior** para agregar una tarea: nombre + fecha de vencimiento elegida en un **pequeño calendario** (se muestra como `dd/mm/aaaa`). La app calcula cuántos días faltan.
 - **Lista de barras horizontales**: nombre de la tarea y, a la derecha, un recuadro de color con el tiempo restante.
-- **Tocar el recuadro** cambia la unidad: días → semanas → meses → días.
+- **Tocar el recuadro** cambia lo que muestra: días → semanas → meses → fecha (`dd/mm/aaaa`) → días.
 - **Orden**: por defecto la fecha más próxima primero. Con las flechas ▲▼ se mueve a mano; el texto "volver a fecha" restaura el orden automático.
 - **Color del recuadro** según urgencia: rojo (vencida), naranja (0–2 días), amarillo (hasta 7), verde (hasta 30), azul (más de 30).
 
@@ -49,6 +49,7 @@ assets/                Imágenes e íconos
 | Colores / fondo                  | `src/theme/colors.js`            |
 | Efecto de vidrio                 | `src/components/GlassCard.js`    |
 | Cómo se agrega una tarea         | `src/components/AddTaskBar.js`   |
+| El calendario                    | `src/components/CalendarPicker.js` |
 | Cómo se ve cada tarea            | `src/components/TaskRow.js`      |
 | Reglas de orden y tareas         | `src/hooks/useTasks.js`          |
 | Cálculo de días/semanas/meses    | `src/utils/dates.js`             |

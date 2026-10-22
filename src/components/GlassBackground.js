@@ -15,7 +15,8 @@ export default function GlassBackground({ children }) {
 }
 
 const styles = StyleSheet.create({
-  fill: { flex: 1 },
+  // overflow hidden: the decorative blobs extend past the screen edge
+  fill: { flex: 1, overflow: 'hidden' },
   blob: { position: 'absolute', width: 260, height: 260, borderRadius: 130, opacity: 0.55 },
   a: { top: -60, left: -80 },
   b: { top: 280, right: -100 },
