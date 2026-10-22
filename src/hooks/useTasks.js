@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { nextUnit } from '../utils/dates';
 
-// Task shape: { id, title, due (timestamp), unit: 'days' | 'weeks' | 'months' }
+// Task shape: { id, title, description, category, due (timestamp), unit: 'days' | 'weeks' | 'months' | 'date' }
 // Everything is saved on the device, so the app works with no internet.
 const STORAGE_KEY = 'glass-tasks:v1';
 
@@ -35,8 +35,8 @@ export function useTasks() {
     [tasks, sortMode]
   );
 
-  const addTask = (title, due) => {
-    const task = { id: String(Date.now()), title, due, unit: 'days' };
+  const addTask = ({ title, description, category, due }) => {
+    const task = { id: String(Date.now()), title, description, category, due, unit: 'days' };
     setTasks((prev) => [...prev, task]);
   };
 

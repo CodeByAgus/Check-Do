@@ -54,18 +54,18 @@ export default function CalendarPicker({ value, onSelect }) {
 }
 
 const styles = StyleSheet.create({
-  box: { marginTop: 10, paddingTop: 8, borderTopWidth: 1, borderTopColor: 'rgba(255,255,255,0.2)' },
+  box: { marginTop: 12, padding: 10, borderRadius: 18, backgroundColor: colors.tint },
   header: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginBottom: 6 },
   nav: { width: 32, height: 28, alignItems: 'center', justifyContent: 'center' },
-  navText: { color: colors.text, fontSize: 22, marginTop: -3 },
-  month: { color: colors.text, fontWeight: '600', fontSize: 15 },
+  navText: { color: colors.primary, fontSize: 22, marginTop: -3 },
+  month: { color: colors.ink, fontWeight: '700', fontSize: 15 },
   grid: { flexDirection: 'row', flexWrap: 'wrap' },
   // 7 columns: each cell is one seventh of the row.
   cell: { width: `${100 / 7}%`, height: 34, alignItems: 'center', justifyContent: 'center' },
-  weekday: { color: colors.textSoft, fontSize: 12, textAlign: 'center', lineHeight: 34 },
+  weekday: { color: colors.inkSoft, fontSize: 12, textAlign: 'center', lineHeight: 34 },
   day: { width: 30, height: 30, borderRadius: 15, alignItems: 'center', justifyContent: 'center' },
-  today: { borderWidth: 1, borderColor: colors.text },
-  selected: { backgroundColor: 'rgba(255,255,255,0.85)' },
-  dayText: { color: colors.text, fontSize: 14 },
-  selectedText: { color: '#1b1f4b', fontWeight: '700' },
+  today: { borderWidth: 1, borderColor: colors.primary },
+  selected: { backgroundColor: colors.primary },
+  dayText: { color: colors.ink, fontSize: 14 },
+  selectedText: { color: colors.onPrimary, fontWeight: '700' },
 });

@@ -1,10 +1,10 @@
 {
   "expo": {
-    "name": "Glass Tasks",
+    "name": "Check-Do",
     "slug": "glass-tasks",
     "version": "1.0.0",
     "orientation": "portrait",
-    "userInterfaceStyle": "dark",
+    "userInterfaceStyle": "light",
     "platforms": ["ios", "android", "web"],
     "web": { "bundler": "metro" }
   }

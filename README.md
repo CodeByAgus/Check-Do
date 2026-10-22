@@ -1,14 +1,20 @@
-# Glass Tasks
+# Check-Do
 
-App de tareas con estilo **liquid glass** (vidrio translúcido, como en iPhone). Un solo código funciona en **Expo Go (móvil)** y en el **navegador (web)**.
+App de tareas con fechas de vencimiento. Un solo código funciona en **Expo Go (móvil)** y en el **navegador (web)**, y se puede instalar en el iPhone como web y usar **sin internet**.
 
 ## Qué hace
 
-- **Barra superior** para agregar una tarea: nombre + fecha de vencimiento elegida en un **pequeño calendario** (se muestra como `dd/mm/aaaa`). La app calcula cuántos días faltan.
-- **Lista de barras horizontales**: nombre de la tarea y, a la derecha, un recuadro de color con el tiempo restante.
+**Pantalla principal ("Mis tareas")**
+- Encabezado blanco con el título, el botón **+** y la fecha de hoy.
+- **Franja de días** (hoy y los 13 siguientes). Un punto marca los días con tareas. Tocar un día muestra solo las tareas que vencen ese día; tocarlo otra vez (o "ver todas") quita el filtro.
+- **Tarjetas de tarea** sobre el fondo azul: icono de categoría, nombre, descripción y, en la esquina inferior derecha, un recuadro de color con el plazo.
 - **Tocar el recuadro** cambia lo que muestra: días → semanas → meses → fecha (`dd/mm/aaaa`) → días.
-- **Orden**: por defecto la fecha más próxima primero. Con las flechas ▲▼ se mueve a mano; el texto "volver a fecha" restaura el orden automático.
 - **Color del recuadro** según urgencia: rojo (vencida), naranja (0–2 días), amarillo (hasta 7), verde (hasta 30), azul (más de 30).
+- **Orden**: por defecto la fecha más próxima primero. Con ▲▼ se mueve a mano; "volver a fecha" restaura el orden automático.
+
+**Pantalla "Nueva tarea"**
+- Nombre, categoría (Trabajo, Personal, Estudio, Hogar), fecha elegida en un **pequeño calendario** y descripción opcional.
+- La app calcula cuántos días faltan y lo muestra al elegir la fecha.
 
 ## Cómo ejecutarla
 
@@ -24,35 +30,37 @@ npm run start
 `expo install --fix` ajusta las versiones a la compatible con tu Expo Go.
 
 3. En la terminal que aparece:
-   - **Móvil:** escanear el QR con la app **Expo Go**.
+   - **Móvil:** escanear el QR con la app **Expo Go** (teléfono y PC en la misma red).
    - **Web:** presionar `w` (o `npm run web`).
 
 ## Estructura de carpetas
 
 ```
-App.js                 Raíz de la app
+App.js                 Raíz: elige qué pantalla mostrar y guarda las tareas
 index.js               Punto de entrada
 src/
-  screens/             Pantallas completas (HomeScreen)
-  components/          Piezas visuales reutilizables (vidrio, barra, fila)
+  screens/             Pantallas completas (HomeScreen, CreateTaskScreen)
+  components/          Piezas visuales (DayStrip, TaskCard, CategoryChips, CalendarPicker)
   hooks/               Lógica de datos (useTasks)
-  utils/               Funciones puras (cálculo de fechas)
-  theme/               Colores en un solo lugar
+  utils/               Funciones puras (fechas)
+  theme/               Colores y categorías en un solo lugar
+public/                Archivos web: manifest, íconos, modo offline
 docs/                  Documentación (cambios, decisiones)
-assets/                Imágenes e íconos
+assets/                Imágenes
 ```
 
 ## Dónde cambiar cosas
 
-| Quiero cambiar…                  | Archivo                          |
-| -------------------------------- | -------------------------------- |
-| Colores / fondo                  | `src/theme/colors.js`            |
-| Efecto de vidrio                 | `src/components/GlassCard.js`    |
-| Cómo se agrega una tarea         | `src/components/AddTaskBar.js`   |
-| El calendario                    | `src/components/CalendarPicker.js` |
-| Cómo se ve cada tarea            | `src/components/TaskRow.js`      |
-| Reglas de orden y tareas         | `src/hooks/useTasks.js`          |
-| Cálculo de días/semanas/meses    | `src/utils/dates.js`             |
+| Quiero cambiar…                       | Archivo                            |
+| ------------------------------------- | ---------------------------------- |
+| Colores y categorías                  | `src/theme/colors.js`              |
+| Pantalla principal                    | `src/screens/HomeScreen.js`        |
+| Formulario de nueva tarea             | `src/screens/CreateTaskScreen.js`  |
+| Cómo se ve cada tarea y su recuadro   | `src/components/TaskCard.js`       |
+| Franja de días                        | `src/components/DayStrip.js`       |
+| El calendario                         | `src/components/CalendarPicker.js` |
+| Reglas de orden, guardado y tareas    | `src/hooks/useTasks.js`            |
+| Cálculos y formato de fechas          | `src/utils/dates.js`               |
 
 Más detalle en [docs/CHANGELOG.md](docs/CHANGELOG.md) y [docs/DECISIONS.md](docs/DECISIONS.md).
 

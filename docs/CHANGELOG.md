@@ -31,6 +31,22 @@
 - El chip de meses (`mes`) no se vio en pantalla; la lógica está en `src/utils/dates.js`.
 - Para abrirla en Expo Go el teléfono y el PC deben compartir red; instalar la app como APK (sin PC ni wifi) queda como paso futuro.
 
+## 2026-10-22 — Rediseño: formato "Mis tareas" azul y blanco
+
+Se reemplazó el estilo de vidrio por un diseño basado en una imagen de referencia (pantalla principal + pantalla de crear tarea).
+
+- **Pantalla principal** (`HomeScreen`): encabezado blanco con esquina curva, título, botón +, fecha de hoy y franja de días; debajo, tarjetas blancas sobre fondo azul con una línea de tiempo a la izquierda.
+- **Franja de días** (`DayStrip`): hoy + 13 días, punto en los días con tareas, filtra por día al tocar.
+- **Tarjeta** (`TaskCard`): icono de categoría, nombre, descripción; el recuadro de plazo (con color de urgencia) queda en la esquina inferior derecha. Mantiene el ciclo días → semanas → meses → fecha, ▲▼ y ✕.
+- **Pantalla Nueva tarea** (`CreateTaskScreen`): nombre, categoría (`CategoryChips`), fecha con el calendario, descripción y botón "Crear tarea". Reemplaza a la barra de arriba.
+- **Modelo de tarea**: se agregaron `description` y `category`. Las tareas guardadas antes siguen funcionando (categoría por defecto).
+- `App.js` ahora guarda las tareas y alterna entre las dos pantallas (sin librería de navegación).
+- `CalendarPicker` y la web instalable (fondo, íconos, nombre **Check-Do**, barra de estado de iPhone) se adaptaron a los colores nuevos.
+- Se eliminaron `GlassCard`, `GlassBackground`, `AddTaskBar`, `TaskRow` y las dependencias `expo-blur` y `expo-linear-gradient`.
+- No se copiaron del diseño de referencia: menú, campana y avatar (no tendrían función) ni las horas de inicio/fin (la app trabaja con fecha de vencimiento).
+- Probado en web con vista de móvil: pantalla principal, crear tarea con categoría, calendario y descripción, filtro por día (30/10 → 1 tarea) y la tarea antigua migrada. La exportación web compila.
+- No probado en un teléfono real.
+
 ## 2026-10-22 — Calendario y fecha en el chip
 
 - Nuevo `src/components/CalendarPicker.js`: calendario mensual pequeño (lunes primero, mes anterior/siguiente, hoy con borde, día elegido resaltado). Sin librerías, igual en móvil y web.

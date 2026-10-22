@@ -55,6 +55,29 @@ export function nextUnit(unit) {
   return UNITS[(UNITS.indexOf(unit) + 1) % UNITS.length];
 }
 
+const WEEKDAY_NAMES = ['domingo', 'lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado'];
+const WEEKDAY_LETTERS = ['D', 'L', 'M', 'X', 'J', 'V', 'S'];
+
+export const weekdayLetter = (timestamp) => WEEKDAY_LETTERS[new Date(timestamp).getDay()];
+
+// "jueves, 22 de octubre"
+export function formatLongDate(timestamp) {
+  const d = new Date(timestamp);
+  return `${WEEKDAY_NAMES[d.getDay()]}, ${d.getDate()} de ${MONTH_NAMES[d.getMonth()].toLowerCase()}`;
+}
+
+export function sameDay(a, b) {
+  return startOfDay(a).getTime() === startOfDay(b).getTime();
+}
+
+// Timestamps for today and the following days (used by the day strip).
+export function nextDays(count) {
+  const today = startOfDay(Date.now());
+  return Array.from({ length: count }, (_, i) =>
+    new Date(today.getFullYear(), today.getMonth(), today.getDate() + i).getTime()
+  );
+}
+
 // Cells for one month grid, Monday first: leading nulls, then day numbers.
 export function monthCells(year, month) {
   const offset = (new Date(year, month, 1).getDay() + 6) % 7;
